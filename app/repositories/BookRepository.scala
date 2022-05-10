@@ -39,5 +39,11 @@ class BookRepository {
       }
     }
   }
-
+  def deleteBook(bookId: Long): Option[Book] = {
+    bookList.collectFirst {
+      case b if b.id == bookId =>
+        bookList.remove(b)
+        b
+    }
+  }
 }
