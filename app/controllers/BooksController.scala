@@ -19,6 +19,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
     dataRepository.getBook(bookId) foreach { book =>
       bookToReturn = book
     }
+    if(bookToReturn eq null) throw new Exception("Book not found!")
     Ok(Json.toJson(bookToReturn))
   }
 
@@ -35,6 +36,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
         )
 
       val savedBook: Option[Book] = dataRepository.addBook(bookItem.get)
+      if(savedBook eq None) throw new Exception("Book ID exists!")
       Created(Json.toJson(savedBook))
     }
   }
@@ -44,7 +46,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
     dataRepository.deleteBook(bookId) foreach { book =>
       bookToDelete = book
     }
-    if(bookToDelete eq null) throw new Exception("Book not found")
+    if(bookToDelete eq null) throw new Exception("Book not found!")
     Ok(Json.toJson(s"Successfully deleted book with id $bookId"))
   }
 

@@ -92,6 +92,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
 
       status(book) mustBe OK
       contentType(book) mustBe Some("application/json")
+      contentAsString(book) must include("Successfully deleted book with id 1")
     }
   }
 
