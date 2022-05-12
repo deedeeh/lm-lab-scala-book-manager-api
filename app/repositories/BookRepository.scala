@@ -39,13 +39,7 @@ class BookRepository {
       }
     }
   }
-//  def deleteBook(bookId: Long): Option[Book] = {
-//    bookList.collectFirst {
-//      case b if b.id == bookId =>
-//        bookList.remove(b)
-//        b
-//    }
-//  }
+
     @throws(classOf[Exception])
     def deleteBook(bookId: Long): Boolean = {
       if(!bookList.exists(_.id == bookId)) {
