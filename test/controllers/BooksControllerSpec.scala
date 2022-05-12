@@ -10,6 +10,7 @@ import models.Book
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.libs.json._
+
 import scala.collection.mutable
 
 class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar {
@@ -94,6 +95,15 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
       contentType(book) mustBe Some("application/json")
       contentAsString(book) must include("Successfully deleted book with id 1")
     }
+
+//    "throw an error when deleting a book that doesn't exist" in {
+//      when(mockDataService.deleteBook(80)) thenThrow
+//
+//      val controller = new BooksController(stubControllerComponents(), mockDataService)
+//      val book = controller.deleteBook(80).apply(FakeRequest(DELETE, "/books/80"))
+//
+//      status(book) mustBe INTERNAL_SERVER_ERROR
+//    }
   }
 
 }
