@@ -42,11 +42,7 @@ class BooksController @Inject()(val controllerComponents: ControllerComponents, 
   }
 
   def deleteBook(bookId: Long): Action[AnyContent] = Action {
-    var bookToDelete: Book = null
-    dataRepository.deleteBook(bookId) foreach { book =>
-      bookToDelete = book
-    }
-    if(bookToDelete eq null) throw new Exception("Book not found!")
+    dataRepository.deleteBook(bookId)
     Ok(Json.toJson(s"Successfully deleted book with id $bookId"))
   }
 

@@ -7,7 +7,7 @@ import play.api.test._
 import play.api.test.Helpers._
 import repositories.BookRepository
 import models.Book
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, anyLong}
 import org.mockito.Mockito.when
 import play.api.libs.json._
 
@@ -86,7 +86,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
   "BooksController DELETE deleteBook" should {
 
     "return 200 Ok for deleting a single book" in {
-      when(mockDataService.deleteBook(1)) thenReturn sampleBook
+      when(mockDataService.deleteBook(1)) thenReturn true
 
       val controller = new BooksController(stubControllerComponents(), mockDataService)
       val book = controller.deleteBook(1).apply(FakeRequest(DELETE, "/books/1"))
@@ -96,14 +96,15 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
       contentAsString(book) must include("Successfully deleted book with id 1")
     }
 
-//    "throw an error when deleting a book that doesn't exist" in {
-//      when(mockDataService.deleteBook(80)) thenThrow
-//
-//      val controller = new BooksController(stubControllerComponents(), mockDataService)
-//      val book = controller.deleteBook(80).apply(FakeRequest(DELETE, "/books/80"))
-//
-//      status(book) mustBe INTERNAL_SERVER_ERROR
-//    }
+    "throw an error when deleting a book that doesn't exist" in {
+      when(mockDataService.deleteBook(anyLong())) thenThrow new Exception("Book not found")
+
+      val controller = new BooksController(stubControllerComponents(), mockDataService)
+      val exceptionCaught = intercept[Exception] {
+        controller.deleteBook(80).apply(FakeRequest(DELETE, "/books/80"))
+      }
+      exceptionCaught.getMessage mustBe "Book not found"
+    }
   }
 
 }
