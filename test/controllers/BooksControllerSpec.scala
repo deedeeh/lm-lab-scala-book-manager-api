@@ -81,6 +81,7 @@ class BooksControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injectin
       status(book) mustBe CREATED
       contentType(book) mustBe Some("application/json")
     }
+
   }
 
   "BooksController DELETE deleteBook" should {
